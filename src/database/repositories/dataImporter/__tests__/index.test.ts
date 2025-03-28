@@ -1,5 +1,5 @@
 import { eq, inArray } from 'drizzle-orm/expressions';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getTestDB } from '@/database/models/__tests__/_util';
 import * as Schema from '@/database/schemas';
@@ -25,6 +25,9 @@ beforeEach(async () => {
   });
 
   importer = new DataImporterRepos(clientDB, userId);
+});
+afterEach(async () => {
+  await clientDB.delete(Schema.users);
 });
 
 describe('DataImporter', () => {
