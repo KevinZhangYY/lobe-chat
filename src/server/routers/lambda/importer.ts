@@ -55,4 +55,15 @@ export const importerRouter = router({
     .mutation(async ({ input, ctx }): Promise<ImportResultData> => {
       return ctx.dataImporterService.importData(input.data);
     }),
+  importPgByPost: importProcedure
+    .input(
+      z.object({
+        data: z.record(z.string(), z.array(z.any())),
+        mode: z.enum(['pglite', 'postgres']),
+        schemaHash: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }): Promise<ImportResultData> => {
+      return ctx.dataImporterService.importPgData(input);
+    }),
 });

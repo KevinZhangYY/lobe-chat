@@ -103,7 +103,7 @@ export class ServerService implements IImportService {
       callbacks?.onStageChange?.(ImportStage.Importing);
       const time = Date.now();
       try {
-        const result = await lambdaClient.importer.importByPost.mutate({ data: data });
+        const result = await lambdaClient.importer.importPgByPost.mutate(data);
         const duration = Date.now() - time;
 
         callbacks?.onStageChange?.(ImportStage.Success);

@@ -980,10 +980,8 @@ describe('ImporterService', () => {
       await service.importData(
         { ...(mockImportData.state as any), version: mockImportData.version },
         {
-          callbacks: {
-            onSuccess: (res) => {
-              result = res;
-            },
+          onSuccess: (res) => {
+            result = res;
           },
         },
       );
