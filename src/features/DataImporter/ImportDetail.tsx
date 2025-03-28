@@ -1,10 +1,11 @@
 'use client';
 
 import { Modal } from '@lobehub/ui';
-import { Button, Radio, Space, Table, Typography } from 'antd';
+import { Button, Table, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Flexbox } from 'react-layout-kit';
 
 import { ImportPgDataStructure } from '@/types/export';
@@ -95,6 +96,7 @@ const ImportPreviewModal = ({
   onCancel = () => {},
   importData,
 }: ImportPreviewModalProps) => {
+  const { t } = useTranslation('common');
   const { styles } = useStyles();
   const [duplicateAction] = useState<string>('skip');
   const tables = getNonEmptyTables(importData);
@@ -106,12 +108,12 @@ const ImportPreviewModal = ({
       dataIndex: 'name',
       key: 'name',
       render: (text: string) => <div className={styles.tableName}>{text}</div>,
-      title: '表名',
+      title: t('importPreview.tables.name'),
     },
     {
       dataIndex: 'count',
       key: 'count',
-      title: '记录数',
+      title: t('importPreview.tables.count'),
     },
   ];
 
@@ -130,15 +132,15 @@ const ImportPreviewModal = ({
             onCancel();
           }}
         >
-          取消
+          {t('cancel')}
         </Button>,
         <Button key="confirm" onClick={handleConfirm} type="primary">
-          确认导入
+          {t('importPreview.confirmImport')}
         </Button>,
       ]}
       onCancel={() => onOpenChange(false)}
       open={open}
-      title="导入数据预览"
+      title={t('importPreview.title')}
       width={700}
     >
       <div className={styles.modalContent}>
@@ -147,10 +149,12 @@ const ImportPreviewModal = ({
             <Flexbox align="center" horizontal justify="space-between" width="100%">
               <Flexbox align="center" gap={8} horizontal>
                 <Info className={styles.infoIcon} size={16} />
-                <Text strong>总计将导入 {totalRecords} 条记录</Text>
+                <Text strong>{t('importPreview.totalRecords', { count: totalRecords })}</Text>
               </Flexbox>
               <Flexbox horizontal>
-                <Text type="secondary">{tables.length}个表</Text>
+                <Text type="secondary">
+                  {t('importPreview.totalTables', { count: tables.length })}
+                </Text>
               </Flexbox>
             </Flexbox>
             <Flexbox className={styles.hash} gap={4} horizontal>

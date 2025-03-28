@@ -218,6 +218,16 @@ export default {
       speed: '上传速度',
     },
   },
+  importPreview: {
+    confirmImport: '确认导入',
+    tables: {
+      count: '记录数',
+      name: '表名',
+    },
+    title: '导入数据预览',
+    totalRecords:"总计将导入 {{count}} 条记录",
+    totalTables: '{{count}} 个表',
+  },
   information: '社区与资讯',
   installPWA: '安装浏览器应用 (PWA)',
   lang: {
