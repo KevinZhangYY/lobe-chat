@@ -416,6 +416,16 @@ export class DataImporterRepos {
           if (record.clientId) {
             this.idMaps[tableName][record.clientId] = record.id;
           }
+
+          // 记录中可能使用的任何其他ID标识符
+          const originalRecord = tableData.find(
+            (item) => item.id === record.id || item.clientId === record.clientId,
+          );
+
+          if (originalRecord) {
+            // 确保原始记录ID也映射到数据库记录ID
+            this.idMaps[tableName][originalRecord.id] = record.id;
+          }
         }
       }
 
@@ -542,6 +552,14 @@ export class DataImporterRepos {
                 case 'skip': {
                   record.newRecord._skip = true;
                   result.skips++;
+
+                  // 关键改进：即使跳过，也建立ID映射关系
+                  if (!isCompositeKey) {
+                    this.idMaps[tableName][record.originalId] = exists.id;
+                    if (record.newRecord.clientId) {
+                      this.idMaps[tableName][record.newRecord.clientId] = exists.id;
+                    }
+                  }
                   break;
                 }
                 case 'override': {
@@ -587,6 +605,14 @@ export class DataImporterRepos {
                 case 'skip': {
                   record.newRecord._skip = true;
                   result.skips++;
+
+                  // 关键改进：即使跳过，也建立ID映射关系
+                  if (!isCompositeKey) {
+                    this.idMaps[tableName][record.originalId] = exists.id;
+                    if (record.newRecord.clientId) {
+                      this.idMaps[tableName][record.newRecord.clientId] = exists.id;
+                    }
+                  }
                   break;
                 }
                 case 'override': {
@@ -657,9 +683,10 @@ export class DataImporterRepos {
               const originalId = originalIds[j];
               this.idMaps[tableName][originalId] = newRecord.id;
 
-              // 非常重要: 同时也将clientId映射到新ID
-              if (newRecord.clientId) {
-                this.idMaps[tableName][newRecord.clientId] = newRecord.id;
+              // 同时确保clientId也能映射到正确的ID
+              const originalRecord = tableData.find((item) => item.id === originalId);
+              if (originalRecord && originalRecord.clientId) {
+                this.idMaps[tableName][originalRecord.clientId] = newRecord.id;
               }
             }
           }

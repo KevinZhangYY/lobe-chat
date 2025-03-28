@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { Center } from 'react-layout-kit';
 
 import DataStyleModal from '@/components/DataStyleModal';
-import { isDeprecatedEdition } from '@/const/version';
 import { importService } from '@/services/import';
 import { ClientService, ImportResult, ImportResults } from '@/services/import/_deprecated';
 import { useChatStore } from '@/store/chat';
